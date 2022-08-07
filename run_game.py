@@ -5,6 +5,7 @@ import time
 import hand_tracking_module as htm
 import hand_gestures as hg
 import numpy as np
+import pyautogui as p
 
 '''
 # Specify location of 3x3 squares
@@ -162,7 +163,9 @@ def setDefault():
 
 def checkKeyPressed(img, keypoints, gesture, hand2=False):
     img_h, img_w, img_c = img.shape
+    lastOne = "s"
     if keypoints != []:
+        print(lastOne)
         '''
         #if hand2: #gestures for hand 2
         if gesture.thumbFingIn():
@@ -178,25 +181,54 @@ def checkKeyPressed(img, keypoints, gesture, hand2=False):
         '''
         if gesture.l_click():
             cv2.putText(img,"l_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.r_click():
+        elif gesture.r_click():
             cv2.putText(img,"r_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+            
         #else: #gestures for hand 1
-        if gesture.space():
+        elif gesture.space():
             cv2.putText(img,"space",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1) 
-        if gesture.w():
+
+            p.press("space")
+            lastOne = "space"
+            print(lastOne)
+
+        elif gesture.w():
+            
             cv2.putText(img,"w",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.a():
+            if lastOne != "w":
+                p.keyUp(lastOne)
+                p.keyDown("w")
+            lastOne = "w"
+        elif gesture.a():
             cv2.putText(img,"a",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.s():
+            if lastOne != "a":
+                p.keyUp(lastOne)
+                p.keyDown("a")
+            lastOne = "a"
+        elif gesture.s():
             cv2.putText(img,"s",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.d():
+            if lastOne != "s":
+                p.keyUp(lastOne)
+                p.keyDown("s")
+            lastOne = "s"
+        elif gesture.d():
             cv2.putText(img,"d",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.e():
+            if lastOne != "d":
+                p.keyUp(lastOne)
+                p.keyDown("d")
+            lastOne = "d"
+        elif gesture.e():
             cv2.putText(img,"e",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.q():
+            p.press("e")
+            lastOne = "e"
+        elif gesture.q():
             cv2.putText(img,"q",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.inventory_scroll():
+            p.press("q")
+            lastOne="q"
+        elif gesture.inventory_scroll():
             cv2.putText(img,"scroll",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        else:
+            p.keyUp(lastOne)
 
 
 def main():
