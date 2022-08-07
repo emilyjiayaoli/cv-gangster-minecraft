@@ -3,7 +3,7 @@ import cv2
 import mediapipe as mp
 import time
 import hand_tracking_module as htm
-import hand_gestures_old as hg
+import hand_gestures as hg
 import numpy as np
 
 '''
@@ -199,7 +199,6 @@ def checkKeyPressed(img, keypoints, gesture, hand2=False):
             cv2.putText(img,"scroll",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
 
 
-
 def main():
     cap = cv2.VideoCapture(0)
     #cap.set(3, 640)
@@ -217,9 +216,8 @@ def main():
         #static_underlay = boardSetUp(static_underlay)
         static_underlay = cv2.imread("static_overlay.png") #temporarily
 
-
         keypoints = hand.get_kpts_list(img) #returns list of 21 keypoint positions at that frame
-        x, y = hand.get_finger_kpts(keypoints, 8) 
+        x, y = hand.get_finger_kpts(keypoints, 8)
 
         #multi_subjects_keypoints = hand.get_kpts_list(img)
         #print("multi_subjects_keypoints len is ", multi_subjects_keypoints)

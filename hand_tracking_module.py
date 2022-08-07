@@ -30,15 +30,15 @@ class HandTracking():
         if results.multi_hand_landmarks:
             for handlm in results.multi_hand_landmarks:
                 #print('handlm', handlm)
-                keypoints = []
+                #keypoints = []
                 for id, joint_lm in enumerate(handlm.landmark):
                     if draw_keypoints:
                        self.drawMp.draw_landmarks(img, handlm, self.handsMp.HAND_CONNECTIONS)
 
                     h, w, c = img.shape
                     cx, cy = int(joint_lm.x * w), int(joint_lm.y * h)
-                    keypoints.append([id, cx, cy])
-                multi_subjects_keypoints.append(keypoints)
+                    multi_subjects_keypoints.append([id, cx, cy])
+                #multi_subjects_keypoints.append(keypoints)
         
         return multi_subjects_keypoints 
 
