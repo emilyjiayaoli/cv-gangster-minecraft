@@ -66,15 +66,18 @@ class Hand_Gestures():
         
     def a(self): # left - peace sign
         if not self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
+
             return True
         else: False
 
     def s(self): # down - ring and pinky down
+
         if not self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
             return True
         else: False
 
     def d(self): # right - four
+
         if not self.indexFingIn() and not self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
             return True
         else: False
@@ -90,6 +93,7 @@ class Hand_Gestures():
         else: False
         
     def r_click(self): # right_click - 4th finger down
+
         if not self.indexFingIn() and self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
             return True
         else: False
