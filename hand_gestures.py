@@ -20,7 +20,6 @@ class Hand_Gestures():
     def middleFingIn(self):
         if self.keypoints[12][2]>self.keypoints[11][2]:
             return True
-
         else:
             return False
             
@@ -31,7 +30,7 @@ class Hand_Gestures():
             return False
 
     def pinkieFingIn(self):
-        if self.keypoints[12][2]>self.keypoints[11][2]:
+        if self.keypoints[20][2]>self.keypoints[19][2]:
             return True
         else:
             return False
@@ -54,52 +53,59 @@ class Hand_Gestures():
             return False
 
     def w(self): # up - okay sign
-        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and self.thumbFingIn():
+        if self.indexFingIn() and not self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
             return True
         else: False
+
+
+    def w1(self): # up - okay sign
+        if self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and self.thumbFingIn():
+            return True
+        else: False
+
         
     def a(self): # left - peace sign
-        if not self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
+        if not self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
             return True
         else: False
 
     def s(self): # down - ring and pinky down
-        if not self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
+        if not self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
             return True
         else: False
 
     def d(self): # right - four
-        if not self.indexFingIn and not self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
+        if not self.indexFingIn() and not self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
             return True
         else: False
 
     def space(self): # raises the middle finger
-        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn():
+        if self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn():
             return True
         else: False     
   
     def l_click(self): # left_click - pinky thumb
-        if self.indexFingIn and self.ringFingIn() and not self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
+        if self.indexFingIn() and self.ringFingIn() and not self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
             return True
         else: False
         
     def r_click(self): # right_click - 4th finger down
-        if not self.indexFingIn and self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
+        if not self.indexFingIn() and self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
             return True
         else: False
     
     def e(self): # inventory - fist
-        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and self.thumbFingIn():
+        if self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and self.thumbFingIn():
             return True
         else: False
     
     def q(self): # drop item - L with index/thumb
-        if not self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
+        if not self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
             return True
         else: False
 
     def inventory_scroll(self): # - thumbs points left
-        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
+        if self.indexFingIn() and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
             return True
         else: False
 

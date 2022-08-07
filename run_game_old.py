@@ -2,7 +2,7 @@ from operator import index
 import cv2
 import mediapipe as mp
 import time
-import hand_tracking_module as htm
+import hand_tracking_module_new as htm
 import numpy as np
 
 

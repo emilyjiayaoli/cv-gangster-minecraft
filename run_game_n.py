@@ -2,8 +2,8 @@ from operator import index
 import cv2
 import mediapipe as mp
 import time
-import hand_tracking_module as htm
-import hand_gestures as hg
+import hand_tracking_module_new as htm
+import hand_gestures_old as hg
 import numpy as np
 
 '''
@@ -163,40 +163,28 @@ def setDefault():
 def checkKeyPressed(img, keypoints, gesture, hand2=False):
     img_h, img_w, img_c = img.shape
     if keypoints != []:
-        '''
-        #if hand2: #gestures for hand 2
-        if gesture.thumbFingIn():
-            cv2.putText(img,"thumb",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.indexFingIn():
-            cv2.putText(img,"index",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.middleFingIn():
-            cv2.putText(img,"middle",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.ringFingIn():
-            cv2.putText(img,"ring",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.pinkieFingIn():
-            cv2.putText(img,"pinkie",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        '''
-        if gesture.l_click():
-            cv2.putText(img,"l_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.r_click():
-            cv2.putText(img,"r_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        #else: #gestures for hand 1
-        if gesture.space():
-            cv2.putText(img,"space",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1) 
-        if gesture.w():
-            cv2.putText(img,"w",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.a():
-            cv2.putText(img,"a",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.s():
-            cv2.putText(img,"s",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.d():
-            cv2.putText(img,"d",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.e():
-            cv2.putText(img,"e",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.q():
-            cv2.putText(img,"q",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-        if gesture.inventory_scroll():
-            cv2.putText(img,"scroll",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        if hand2: #gestures for hand 2
+            if gesture.l_click():
+                cv2.putText(img,"l_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+                print('todo')
+            if gesture.r_click():
+                cv2.putText(img,"r_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        else: #gestures for hand 1
+            if gesture.space():
+                cv2.putText(img,"space",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+                print('todo')
+            if gesture.w():
+                cv2.putText(img,"w",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+            if gesture.a():
+                cv2.putText(img,"a",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+            if gesture.s():
+                print('todo')
+            if gesture.d():
+                print('todo')
+            if gesture.e():
+                print('todo')
+            if gesture.q():
+                print('todo')
 
 
 def main():
@@ -216,20 +204,36 @@ def main():
         #static_underlay = boardSetUp(static_underlay)
         static_underlay = cv2.imread("static_overlay.png") #temporarily
 
-        keypoints = hand.get_kpts_list(img) #returns list of 21 keypoint positions at that frame
-        x, y = hand.get_finger_kpts(keypoints, 8) 
-
-        #multi_subjects_keypoints = hand.get_kpts_list(img)
+        multi_subjects_keypoints = hand.get_kpts_list(img)
         #print("multi_subjects_keypoints len is ", multi_subjects_keypoints)
         
-        #  if multi_subjects_keypoints != []:
-        #if len(multi_subjects_keypoints) == 1:
-        
-        img = cv2.circle(img, (x, y), 20, (255, 0, 0), 3)
-        h1_gesture = hg.Hand_Gestures(keypoints)
+        if multi_subjects_keypoints != [[]]:
+            if len(multi_subjects_keypoints) == 1:
+                h1_keypoints = hand.get_kpts_list(img)[0]
+                x1, y1 = hand.get_finger_kpts(h1_keypoints, 12) #retrieves x, y position of the index finger for the current frame
+                img = cv2.circle(img, (x1, y1), 20, (255, 0, 0),3)
+                h1_gesture = hg.Hand_Gestures(h1_keypoints)
 
-        checkKeyPressed(img, keypoints, h1_gesture)
-            
+                checkKeyPressed(img, h1_keypoints, h1_gesture)
+            elif len(multi_subjects_keypoints) == 2:
+                h1_keypoints = hand.get_kpts_list(img)[0] #returns list of 21 keypoint positions at that frame
+                h2_keypoints = hand.get_kpts_list(img)[1]
+                print('h2_keypoints', len(hand.get_kpts_list(img)))
+                #h2_keypoints = hand.get_kpts_list(img)[1] 
+
+                x1, y1 = hand.get_finger_kpts(h1_keypoints, 12)
+                x2, y2 = hand.get_finger_kpts(h2_keypoints, 12) # x2, y2 at the center of the hand
+                img = cv2.circle(img, (x1, y1), 20, (255, 0, 0),3)
+                img = cv2.circle(img, (x2, y2), 20, (255, 0, 0),3)
+                h1_gesture = hg.Hand_Gestures(h1_keypoints)
+                h2_gesture = hg.Hand_Gestures(h2_keypoints)
+                
+                checkKeyPressed(img, h1_keypoints, h1_gesture)
+                checkKeyPressed(img, h1_keypoints, h1_gesture, hand2=True)
+            else:
+                if len(multi_subjects_keypoints) != 1 and len(multi_subjects_keypoints) !=2:
+                    print("multi_subjects_keypoints length is not 1 or 2")
+
         '''
         if keyPressed('esc', x, y): #if hand is in bounding box of esp key
             break
