@@ -55,40 +55,57 @@ class Hand_Gestures():
             return False
 
     def w(self): # up - okay sign
-        pass
+        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and self.thumbFingIn():
+            return True
+        else: False
         
     def a(self): # left - peace sign
-        pass
+        if not self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
+            return True
+        else: False
 
-    def s(self): # down - west coast
-        pass
+    def s(self): # down - ring and pinky down
+        if not self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
+            return True
+        else: False
 
-    def d(self): # right - westside
-        pass
+    def d(self): # right - four
+        if not self.indexFingIn and not self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and self.thumbFingIn():
+            return True
+        else: False
 
     def space(self): # raises the middle finger
-        if self.indexFingIn and self.ringFingIn() and self.ringFingIn() and not self.middleFingIn():
+        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and not self.middleFingIn():
             return True
         else: False     
-    
-
+  
     def l_click(self): # left_click - pinky thumb
-        pass
+        if self.indexFingIn and self.ringFingIn() and not self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
+            return True
+        else: False
         
     def r_click(self): # right_click - 4th finger down
-        pass
+        if not self.indexFingIn and self.ringFingIn() and not self.pinkieFingIn() and not self.middleFingIn() and not self.thumbFingIn():
+            return True
+        else: False
     
     def e(self): # inventory - fist
-        pass
+        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and self.thumbFingIn():
+            return True
+        else: False
     
-    def q(self): # drop item - thumbs up
-        pass
-    def inventory_scroll(self): # - thumbs down
-        pass
+    def q(self): # drop item - L with index/thumb
+        if not self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
+            return True
+        else: False
+
+    def inventory_scroll(self): # - thumbs points left
+        if self.indexFingIn and self.ringFingIn() and self.pinkieFingIn() and self.middleFingIn() and not self.thumbFingIn():
+            return True
+        else: False
 
     def cursor(): 
         pass
-
         
 
 #wasd, e (inventory), spacebar, left_key, right_key, inventory_scroll, cursor,
