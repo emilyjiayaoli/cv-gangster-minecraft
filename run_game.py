@@ -3,10 +3,10 @@ import cv2
 import mediapipe as mp
 import time
 import hand_tracking_module as htm
-import hand_gestures as hg
+import hand_gestures_old as hg
 import numpy as np
 
-
+'''
 # Specify location of 3x3 squares
 GRID = {1:[(200,100),(400,300)], #first point in rectangle, second point in rectangle
             2:[(400,100),(600,300)], 
@@ -32,6 +32,7 @@ for i in GRID:
     cur = GRID[i]
     new_cur = [(cur[0][0]+x,cur[0][1]+y),(cur[1][0]+x,cur[1][1]+y)] #transform x
     GRID[i] = new_cur
+'''
 
 # Use OpenCV to draw individual squares
 def boardSetUp(img):
@@ -149,30 +150,49 @@ def keyPressed(key: str, finger_x, finger_y):
         return True
 
 def setDefault():
-    board = [[None, None, None],
-            [None, None, None],
-            [None, None, None]]
+    
     hand = htm.HandTracking()
     cTime = 0
     pTime = 0
 
-    winner_status = False
-    winner = None
-    player1 = True #defaults to player1 starting
-
     static_overlay = cv2.imread("static_overlay.png")
     static_underlay = cv2.imread("static_overlay.png")
 
-    return board, hand, cTime, pTime, winner_status, winner, player1, static_overlay, static_underlay
+    return hand, cTime, pTime, static_overlay, static_underlay
+
+def checkKeyPressed(img, keypoints, gesture, hand2=False):
+    img_h, img_w, img_c = img.shape
+    if keypoints != []:
+        if hand2: #gestures for hand 2
+            if gesture.l_click():
+                cv2.putText(img,"l_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+                print('todo')
+            if gesture.r_click():
+                cv2.putText(img,"r_click",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        else: #gestures for hand 1
+            if gesture.space():
+                cv2.putText(img,"space",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+                print('todo')
+            if gesture.w():
+                cv2.putText(img,"w",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+            if gesture.a():
+                cv2.putText(img,"a",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+            if gesture.s():
+                print('todo')
+            if gesture.d():
+                print('todo')
+            if gesture.e():
+                print('todo')
+            if gesture.q():
+                print('todo')
+
 
 def main():
     cap = cv2.VideoCapture(0)
     #cap.set(3, 640)
     #cap.set(4, 480)
-    board, hand, cTime, pTime, winner_status, winner, player1, static_overlay, static_underlay = setDefault()
-
-    #success, img = cap.read()
-    #img_h, img_w, img_c = img.shape
+    
+    hand, cTime, pTime, static_overlay, static_underlay = setDefault()
 
     while True:
         success, img = cap.read()
@@ -180,61 +200,52 @@ def main():
 
         img_h, img_w, img_c = img.shape
 
-        static_underlay = boardSetUp(static_underlay)
+        
+        #static_underlay = boardSetUp(static_underlay)
+        static_underlay = cv2.imread("static_overlay.png") #temporarily
 
-        keypoints = hand.get_kpts_list(img) #returns list of 21 keypoint positions at that frame
-        x, y = hand.get_finger_kpts(keypoints, 12) #retrieves x, y position of the index finger for the current frame
-        img = cv2.circle(img, (x,y), 20, (255,0,0),3)
-        #print(keypoints)
+        multi_subjects_keypoints = hand.get_kpts_list(img)
+        #print("multi_subjects_keypoints len is ", multi_subjects_keypoints)
+        
+        if multi_subjects_keypoints != [[]]:
+            if len(multi_subjects_keypoints) == 1:
+                h1_keypoints = hand.get_kpts_list(img)[0]
+                x1, y1 = hand.get_finger_kpts(h1_keypoints, 12) #retrieves x, y position of the index finger for the current frame
+                img = cv2.circle(img, (x1, y1), 20, (255, 0, 0),3)
+                h1_gesture = hg.Hand_Gestures(h1_keypoints)
 
-        gestures = hg.Hand_Gestures(keypoints)
+                checkKeyPressed(img, h1_keypoints, h1_gesture)
+            elif len(multi_subjects_keypoints) == 2:
+                h1_keypoints = hand.get_kpts_list(img)[0] #returns list of 21 keypoint positions at that frame
+                h2_keypoints = hand.get_kpts_list(img)[1]
+                print('h2_keypoints', len(hand.get_kpts_list(img)))
+                #h2_keypoints = hand.get_kpts_list(img)[1] 
 
-        if player1:
-            cv2.putText(img,"Player 1's turn",(int(0.02*img_w), int(0.90*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 4)
-        else: 
-            cv2.putText(img,"Player 2's turn",(int(0.80*img_w), int(0.90*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 4)
-            
-        winner_status, winner = winnerChecker(board, img)
-        draw_status = drawChecker(board)
-        if winner_status:
-            declareWinner(img, winner)
-            #cv2.putText(img, "Restarting Game", (int(0.5*img_w), int(0.5*img_h)), cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 0, 255), 5)
-            #cv2.waitKey(2000)
-            
-            #board, hand, cTime, pTime, winner_status, winner, player1, static_overlay, static_underlay = setDefault()
-        elif draw_status:
-            declareWinner(img, winner, draw_status=True)
-            #cv2.putText(img, "Restarting Game", (int(0.5*img_w), int(0.5*img_h)), cv2.FONT_HERSHEY_SIMPLEX, 5, (0, 0, 255), 5)
-            #cv2.waitKey(2000)
-            #board, hand, cTime, pTime, winner_status, winner, player1, static_overlay, static_underlay = setDefault()
-        else:
-            if keypoints != []:
+                x1, y1 = hand.get_finger_kpts(h1_keypoints, 12)
+                x2, y2 = hand.get_finger_kpts(h2_keypoints, 12) # x2, y2 at the center of the hand
+                img = cv2.circle(img, (x1, y1), 20, (255, 0, 0),3)
+                img = cv2.circle(img, (x2, y2), 20, (255, 0, 0),3)
+                h1_gesture = hg.Hand_Gestures(h1_keypoints)
+                h2_gesture = hg.Hand_Gestures(h2_keypoints)
                 
-                if gestures.space():
-                    cv2.putText(img,"Selected",(int(0.85*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-                    h, w, selected_square = checkInBounds(x, y) #if in bounds, it returns h, w, and which box
-                    #print("x, y: ", x, y)
-                    if selected_square != None: #if height of the board is not 99 or that the point at the index finger is within bounds
-                        #print('board: h ', h, 'w ', w)
-                        if board[h][w]==None: # if the square selected has not been played before, update the internal board, calc the center, draw the circle
-                            board, player1, graph_x, graph_y = updateBoard(board, h, w, selected_square, player1, x, y)
-                            print("graph_x", graph_x, graph_y)
-                            if player1:
-                                static_overlay = cv2.circle(static_overlay, (graph_x, graph_y), 20, (0,255,0), 3)
-                            else:
-                                static_overlay = cv2.circle(static_overlay, (graph_x, graph_y), 20, (0,0,255), 3)
-                                
-                #if gestures.pinkieFingIn():
-                #    cv2.putText(img,"pinkieFinggIn",(int(0.95*img_w), int(0.1*img_h)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-                
+                checkKeyPressed(img, h1_keypoints, h1_gesture)
+                checkKeyPressed(img, h1_keypoints, h1_gesture, hand2=True)
+            else:
+                if len(multi_subjects_keypoints) != 1 and len(multi_subjects_keypoints) !=2:
+                    print("multi_subjects_keypoints length is not 1 or 2")
+
+        '''
         if keyPressed('esc', x, y): #if hand is in bounding box of esp key
             break
         if keyPressed('restart', x, y):
             board, hand, cTime, pTime, winner_status, winner, player1, static_overlay, static_underlay = setDefault()
+        '''
 
+        
         cTime = time.time()
         fps = 1/(cTime -pTime)
         pTime = cTime
+    
 
         #cv2.putText(img, "FPS:"+str(int(fps)), (10,70), cv2.FONT_HERSHEY_COMPLEX, 3, (230,0,0), 2)
         
@@ -242,9 +253,6 @@ def main():
         img = cv2.cvtColor(img, cv2.COLOR_BGR2BGRA)
         static_overlay = cv2.cvtColor(static_overlay, cv2.COLOR_BGR2BGRA) # The circles
         static_underlay = cv2.cvtColor(static_underlay, cv2.COLOR_BGR2BGRA) # Buttons & permanent text
-
-        #print("img.shape", img.shape) #(720, 1280, 4)
-        #print("static_overlay.shape", static_overlay.shape) #(720, 1280, 4)
 
         combined_mask = cv2.addWeighted(static_overlay, 1, static_underlay, 1, 0)
         img = cv2.addWeighted(combined_mask, 10, img, 0.5, 0)
