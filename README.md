@@ -1,5 +1,5 @@
 # Tic Tac Toe game controlled via Computer Vision
-created for Assemble workshop
+created at Hack Club Assemble
 
 Have you ever wanted to play minecraft and be in touch with your inner city street gangsta side? 
 Introducing gangsta minecraft -- a version of minecraft where you move your character by throwing gang signs.
