@@ -1,4 +1,4 @@
-# Tic Tac Toe game controlled via Computer Vision**
+# Tic Tac Toe game controlled via Computer Vision
 created for Assemble workshop
 
 Have you ever wanted to play minecraft and be in touch with your inner city street gangsta side? 
