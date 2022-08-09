@@ -1,3 +1,4 @@
+# Header 1
 **Tic Tac Toe game controlled via Computer Vision**
 created for Assemble workshop
 
@@ -6,7 +7,9 @@ Introducing gangsta minecraft -- a version of minecraft where you move your char
 Using media pipe, opencv, and pyautogui, you can now have a stroke every time you try to move even one block. 
 Do you like easy, seemless, intuitive and captivating gameplay? Get fucked! this game is not for you! its only for real OGs (original Gangstas) 
 
-Get Started
-- Install OpenCV and mediapipe
+# Get Started
+- Pip install OpenCV, mediapipe, pyautogui
 - Install Minecraft
-- Run run_game.py
+- Run minecraft world and run_game.py
+
+![Demo](demo1.png)
