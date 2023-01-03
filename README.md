@@ -1,4 +1,4 @@
-# Tic Tac Toe game controlled via Computer Vision
+# Minecraft controlled via Computer Vision
 created at Hack Club Assemble
 
 Have you ever wanted to play minecraft and be in touch with your inner city street gangsta side? 
